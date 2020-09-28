@@ -12,25 +12,16 @@
 <div class="container">
     <div class="row">
         <div class="card">
-            <a 
-            href="#" 
-            class="card-body"
-            *ngFor="let recipe of recipes"
-            >
-            <img 
-            src="{{ recipe.imagePath }}" 
-            alt="{{ recipe.name }}" 
-            class="img-fluid"
-            >           
-            <h4 class="list-group-item-heading">
-                {{ recipe.name }}
-            </h4>
-            <p class="list-group-item-text">
-                {{ recipe.description }}
-            </p>
-            </a>
-        </div>    
+            <app-recipe-item
+            *ngFor="let recipeEl of recipes"
+            [recipe]="recipeEl"
+            (recipeSelected)="onRecipeSelected(recipeEl)"
+            ></app-recipe-item> 
+        </div> 
+         
     </div>
 </div>
 
-<app-recipe-item></app-recipe-item>
+
+  
+  
