@@ -9,20 +9,26 @@ import { Recipe } from './recipe.model';
 export class RecipeService {
     recipesChanged = new Subject<Recipe[]>();
 
-    private recipes: Recipe[] = [
-        new Recipe('testNume', 'testDescription' , 'https://unsplash.it/1200/768.jpg?image=250',[
-            new Ingredient('Meat',1),
-            new Ingredient('Ceva',20),
+    // private recipes: Recipe[] = [
+    //     new Recipe('testNume', 'testDescription' , 'https://unsplash.it/1200/768.jpg?image=250',[
+    //         new Ingredient('Meat',1),
+    //         new Ingredient('Ceva',20),
 
-        ]),
-        new Recipe('testNume', 'testDescription' , 'https://unsplash.it/1200/768.jpg?image=250',[
-            new Ingredient('FASSS',2),
-            new Ingredient('FASSSuuuuuu',20),
-        ])
-      ];
+    //     ]),
+    //     new Recipe('testNume', 'testDescription' , 'https://unsplash.it/1200/768.jpg?image=250',[
+    //         new Ingredient('FASSS',2),
+    //         new Ingredient('FASSSuuuuuu',20),
+    //     ])
+    //   ];
+      private recipes: Recipe[] = [];
 
       constructor(private slService: ShoppingListService){
 
+      }
+
+      setRecipes(recipes: Recipe[]) {
+        this.recipes = recipes;
+        this.recipesChanged.next(this.recipes.slice());
       }
 
       getRecipes() {
