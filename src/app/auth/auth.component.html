@@ -1,6 +1,12 @@
 <div class="row">
   <div class="col-lg-12">
-    <form #authForm="ngForm" (ngSubmit)="onSubmint(authForm)">
+    <div class="alert alert-danger" *ngIf="error">
+      <p>{{ error }}</p>
+    </div>
+    <div *ngIf=isLoading>
+      <app-loading-spinner></app-loading-spinner>
+    </div>
+    <form #authForm="ngForm" (ngSubmit)="onSubmint(authForm)" *ngIf="!isLoading">
       <div class="form-group">
         <label for="email">Email</label>
         <input

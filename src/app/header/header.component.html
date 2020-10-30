@@ -1,21 +1,24 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="#">Recipe Book</a>
+    <a class="navbar-brand" routerLink="/">Recipe Book</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02"  aria-expanded="false" aria-label="Toggle navigation" (click)="isCollapsed = !isCollapsed" [attr.aria-expanded]="!isCollapsed" aria-controls="navbarTogglerDemo02">
         <span class="navbar-toggler-icon"></span>
       </button>
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent" [ngbCollapse]="isCollapsed">
       <ul class="navbar-nav w-100">
-        <li class="nav-item">
+        <li class="nav-item" *ngIf="isAuthentificated">
           <a routerLinkActive="active" class="nav-link" routerLink="/recipes">Recipe</a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item" *ngIf="!isAuthentificated">
           <a routerLinkActive="active" class="nav-link" routerLink="/auth">Authentificate</a>
         </li>
         <li class="nav-item">
           <a routerLinkActive="active" class="nav-link" routerLink="/shopping-list">Shopping list</a>
         </li>
-        <li class="nav-item dropdown ml-lg-auto">
+        <li class="nav-item ml-lg-auto" *ngIf="isAuthentificated">
+          <a class="nav-link" (click)="onLogout()">Logout</a>
+        </li>
+        <li class="nav-item dropdown ml-xd-auto" *ngIf="isAuthentificated">
           <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Manage
           </a>
