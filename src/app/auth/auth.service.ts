@@ -1,5 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { BehaviorSubject, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { UserModel } from './user.model';
@@ -19,9 +20,10 @@ export interface AuthResponseDate {
 export class AuthService {
 
   user = new BehaviorSubject<UserModel>(null);
+  private tokenExpirationTimer: any;
 
-
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,
+              private router: Router) { }
 
 
 
@@ -81,13 +83,30 @@ export class AuthService {
 
     if(loadedUser.token) {
       this.user.next(loadedUser);
-
+      const expirationDuration = new Date(userData._tokenExpirationDate).getTime() - new Date().getTime();
+      this.autoLogout(expirationDuration);
     }
   }
 
   logout() {
     this.user.next(null);
+    this.router.navigate(['/auth']);
+    localStorage.removeItem('userData');
+    if (this.tokenExpirationTimer) {
+      clearTimeout(this.tokenExpirationTimer);
+    }
+    this.tokenExpirationTimer = null;
   }
+
+
+  autoLogout(expirationDuration: number) {
+    console.log(expirationDuration);
+
+   this.tokenExpirationTimer = setTimeout(() => {
+      this.logout();
+    }, expirationDuration);
+  }
+
 
   private handleAuthentification(email: string, userId: string, token: string, expiresIn: number) {
     const expirationDate = new Date(new Date().getTime() + expiresIn * 1000);
@@ -98,6 +117,7 @@ export class AuthService {
       expirationDate
     );
     this.user.next(user);
+    this.autoLogout(expiresIn * 1000)
     localStorage.setItem('userData', JSON.stringify(user));
   }
 
